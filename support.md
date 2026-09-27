@@ -6,4 +6,4 @@ WaffleWealth is a net worth projection app for iPhone. You tell it what you have
 
 Everything is computed on your device. There is no account, no server, and no data collection.
 
-[Privacy Policy](privacy)
+[Privacy Policy](privacy) · [Back to WaffleWealth](./)
