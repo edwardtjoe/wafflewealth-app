@@ -652,7 +652,13 @@ let resizeTimer = 0;
 window.addEventListener("resize", () => { clearTimeout(resizeTimer); resizeTimer = setTimeout(() => { sizeChart(); draw(false); }, 120); });
 
 /* ---------- waitlist ---------- */
-const isPreview = /claude\.ai$|claude\.ai\/|localhost|127\.0\.0\.1|^file:/.test(location.hostname + location.pathname) || location.protocol === "file:";
+const LIVE_SITE = "https://edwardtjoe.github.io/wafflewealth-app/";
+/* The claude.ai preview runs the page in a sandboxed frame on claudeusercontent.com, which
+   blocks requests to other sites, so the form cannot send from there. */
+const framedBy = (() => { try { return Array.from(location.ancestorOrigins || []).join(" "); } catch (e) { return ""; } })();
+const isPreview = /claude\.ai$|claudeusercontent\.com$/.test(location.hostname)
+  || /claude\.ai/.test(framedBy) || /claude\.ai/.test(document.referrer)
+  || location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.protocol === "file:";
 function wireForm(form, statusId) {
   const status = document.getElementById(statusId);
   const input = form.querySelector('input[type="email"]');
@@ -664,7 +670,12 @@ function wireForm(form, statusId) {
     if (form.querySelector('input[name="_gotcha"]').value) return;
     const email = input.value.trim();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { say("That doesn't look like an email address.", "err"); input.focus(); return; }
-    if (isPreview) { say("Preview only: the form sends once the site is live."); return; }
+    if (isPreview) {
+      status.innerHTML = "";
+      status.append("This is the preview copy, which can't send. The form works on the live site: ");
+      const a = document.createElement("a"); a.href = LIVE_SITE; a.target = "_blank"; a.rel = "noopener"; a.textContent = "edwardtjoe.github.io/wafflewealth-app";
+      status.append(a); status.className = "status"; return;
+    }
     if (!WAITLIST_ENDPOINT) {
       say("The waitlist isn't connected yet. Email us instead: wafflewealth.app.support@gmail.com", "err");
       return;
@@ -677,7 +688,10 @@ function wireForm(form, statusId) {
       input.hidden = true; button.hidden = true;
       try { localStorage.setItem("ww-waitlist", "yes"); } catch (e) {}
     } catch (err) {
-      say("That didn't send. Email us instead: wafflewealth.app.support@gmail.com", "err");
+      console.warn("waitlist:", err);
+      say(err instanceof TypeError
+        ? "That didn't send: something blocked the request to formspree.io, often a content blocker. Allow it and try again, or email us: wafflewealth.app.support@gmail.com"
+        : "That didn't send. Email us instead: wafflewealth.app.support@gmail.com", "err");
       button.disabled = false;
     }
   });
