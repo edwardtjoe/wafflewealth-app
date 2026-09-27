@@ -1,6 +1,6 @@
 # WaffleWealth — Privacy Policy
 
-_Last updated: 12 September 2026_
+_Last updated: 27 September 2026_
 
 **Contact: wafflewealth.app.support@gmail.com**
 
@@ -13,6 +13,7 @@ WaffleWealth projects your net worth from figures you type in yourself. Those fi
 - **No tracking, no ads, no analytics, no third-party SDKs.**
 - **Exactly one network request exists, it is off until you switch it on, and it carries a three-letter currency code.** Never a balance, an amount, an account name, or a category.
 - **App Privacy label: Data Not Collected.**
+- **This website has a waitlist form.** It is the one place we hold an email address, only until the launch email is sent, and it concerns the website only. See [The waitlist on this website](#the-waitlist-on-this-website).
 
 ## Where your data lives
 
@@ -40,6 +41,15 @@ WaffleWealth can export your data as a file: a readable one, or an encrypted bac
 You choose where the file goes — iCloud Drive, another app, wherever you send it. Once it leaves the app it is yours to look after, and it is governed by whatever you sent it to.
 
 An encrypted backup is sealed with a passphrase that only you hold. It is never stored in the app and never sent anywhere. **If you lose it, the backup cannot be opened — not by us, not by anyone.** That is the point of it, and it is not recoverable.
+
+## The waitlist on this website
+
+The homepage of this website has a form for being told when the app is out. It is the one place we hold anything about you, and it concerns the website only: the app itself works exactly as described above.
+
+- **What is sent:** the email address you type. The form is handled by Formspree, Inc. on our behalf, so their servers also see what any web server sees when a browser sends a request: your IP address and browser details. Their handling of that is governed by [Formspree's privacy policy](https://formspree.io/legal/privacy-policy).
+- **What it is used for:** one email telling you the app is available. Nothing else. No newsletter, no marketing, and it is not passed to anyone.
+- **How long it is kept:** until that email has been sent. Then the address is deleted.
+- **How to be removed sooner:** email **wafflewealth.app.support@gmail.com** and it will be deleted.
 
 ## What we do not do
 
