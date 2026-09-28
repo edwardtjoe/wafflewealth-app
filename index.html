@@ -194,6 +194,10 @@ section { padding-block: clamp(40px, 7vw, 88px); border-top: 1px solid var(--rul
 .readings-list dt { font-family: var(--display); font-weight: 600; font-size: var(--fs-h3); letter-spacing: -0.01em; }
 .readings-list dd { margin: 0; color: var(--ink-2); max-width: var(--measure); }
 @media (max-width: 720px) { .readings-list { grid-template-columns: 1fr; } }
+.nots { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 18px; }
+.nots li { display: inline-flex; align-items: center; gap: 8px; padding: 6px 12px; border: 1px solid var(--rule); border-radius: 999px; background: var(--sunken); color: var(--ink-2); font-size: var(--fs-small); }
+.nots li::before { content: "\00d7"; font-family: var(--mono); color: var(--honey); font-size: 1.05em; line-height: 1; }
+.punch { color: var(--ink); max-width: var(--measure); margin: 0 0 clamp(18px, 3vw, 30px); }
 
 .rules { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .rule-card { background: var(--raised); border: 1px solid var(--rule); border-radius: var(--r-md); padding: 22px; display: flex; flex-direction: column; gap: 8px; }
@@ -293,8 +297,8 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
     <div class="hero-copy">
       <p class="label">For iPhone · Free · No account</p>
       <h1>Where your money is <span class="honey">heading.</span></h1>
-      <p class="lede">WaffleWealth projects your net worth forward from what you tell it: what you have, what you earn, what you spend. It draws the line month by month, for any horizon from one month to ten years.</p>
-      <p class="lede">Everything stays on your phone. There is no server and no account. And it never flatters the number: a line that falls is drawn falling.</p>
+      <p class="lede">Tell it what you have, earn and spend. It draws your net worth month by month — one month out to ten years.</p>
+      <p class="lede">All on your phone. No account, no server. And it never flatters the number: a falling line is drawn falling.</p>
 
       <form class="waitlist" id="waitlist" novalidate>
         <label for="email" class="label">Get one email when it's out</label>
@@ -304,7 +308,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
         </div>
         <label class="hp" aria-hidden="true">Leave this empty <input type="text" name="_gotcha" tabindex="-1" autocomplete="off"></label>
         <p class="status" id="status" role="status" aria-live="polite"></p>
-        <p class="note" id="waitlist-note">One email on launch day, then nothing. Your address is used for that and deleted afterwards.</p>
+        <p class="note" id="waitlist-note">One email on launch day, then nothing. Your address is deleted after.</p>
       </form>
       <div id="store-cta" hidden>
         <a class="btn store" id="store-link" href="#">Download on the App Store</a>
@@ -349,7 +353,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
         <div><span class="v fig" id="r-runway">—</span><span class="k">Runway, if income stopped</span></div>
       </div>
 
-      <p class="example"><strong>These are example numbers, not yours.</strong> The same worked position the app offers on first launch: six accounts across three currencies, a car loan, a pension locked until sixty.</p>
+      <p class="example"><strong>Example numbers, not yours.</strong> The position the app opens with: six accounts, three currencies, a car loan, a pension locked until sixty.</p>
     </div>
   </div>
 
@@ -357,15 +361,22 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
     <div class="wrap">
       <div class="sec-head">
         <h2>Readings, not advice.</h2>
-        <p>Every figure comes from what you typed, and the app shows where it came from. It is not a transaction tracker: there are no bank connections, no receipts and no categories to maintain. You work with balances and monthly totals, and you can change any assumption in two taps to see what it does to the line.</p>
+        <p>Every figure traces back to something you typed — and the app shows you where it came from.</p>
       </div>
+      <ul class="nots">
+        <li>Transaction tracking</li>
+        <li>Bank connections</li>
+        <li>Receipts to file</li>
+        <li>Categories to maintain</li>
+      </ul>
+      <p class="punch">Balances and monthly totals in. Change any assumption in two taps, and watch the line move.</p>
       <dl class="readings-list">
-        <div><dt>Net worth today, and at the horizon</dt><dd>Any horizon from one month to ten years. Change it and the line redraws. Drag a finger across the chart to read any month.</dd></div>
-        <div><dt>Behind the line</dt><dd>What every month is made of: money in, money out, investment growth, interest and dividends, and anything you have planned.</dd></div>
-        <div><dt>Runway</dt><dd>How long your money would last if your income stopped. Locked money, such as a pension, counts in your net worth but is left out of this one reading, because you could not spend it.</dd></div>
-        <div><dt>Target</dt><dd>Name an amount and a date. The app says what reaching it would take: saving more each month, or a higher yearly return. One lever at a time, never both.</dd></div>
-        <div><dt>What moves the line</dt><dd>Which single assumption moves the line most, and by how much at the horizon. Which lever is easiest to actually move is yours to judge.</dd></div>
-        <div><dt>Currency exposure</dt><dd>What your position looks like if one currency moves against another, for money you hold somewhere other than where you spend it.</dd></div>
+        <div><dt>Net worth today, and at the horizon</dt><dd>One month to ten years. Change it, the line redraws. Drag across the chart to read any month.</dd></div>
+        <div><dt>Behind the line</dt><dd>What each month is made of: money in, money out, growth, interest and dividends, and anything you have planned.</dd></div>
+        <div><dt>Runway</dt><dd>How long your money lasts if income stops. Locked money, like a pension, sits out of this one — you could not spend it.</dd></div>
+        <div><dt>Target</dt><dd>Name an amount and a date. See what it takes: save more monthly, or earn more a year. One lever at a time, never both.</dd></div>
+        <div><dt>What moves the line</dt><dd>Which assumption moves the line most, and by how much. Which one is easiest to move is yours to judge.</dd></div>
+        <div><dt>Currency exposure</dt><dd>What your position looks like if one currency moves against another.</dd></div>
       </dl>
     </div>
   </section>
@@ -374,13 +385,13 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
     <div class="wrap">
       <div class="sec-head">
         <h2>How it handles money.</h2>
-        <p>Four rules the projection engine keeps, whatever you enter. They are the reason the line can be trusted.</p>
+        <p>Four rules the engine keeps, whatever you enter. They are why the line can be trusted.</p>
       </div>
       <div class="rules">
-        <div class="rule-card"><span class="tag">Currencies</span><h3>Balances keep their currency.</h3><p>Stored in the currency they are held in and translated only when shown. Hold an account in GBP, DKK or anything else on the list, and read it in the currency you think in.</p></div>
-        <div class="rule-card"><span class="tag">History</span><h3>Updates keep the old balance.</h3><p>Every update is a new entry, never an edit, so your history stays intact and you can later see how earlier projections compared with what actually happened.</p></div>
-        <div class="rule-card"><span class="tag">Growth</span><h3>Savings earn nothing unless you say so.</h3><p>Cash accumulates as cash. The return rate applies only to accounts you mark as invested, and interest is paid out as cash unless you say otherwise.</p></div>
-        <div class="rule-card"><span class="tag owed">Honesty</span><h3>A falling line is drawn falling.</h3><p>Spend more than you earn and the line goes down. It is never clamped at zero, never smoothed and never softened.</p></div>
+        <div class="rule-card"><span class="tag">Currencies</span><h3>Balances keep their currency.</h3><p>Held in GBP, DKK or anything else on the list, and translated only when shown — so you read it in the currency you think in.</p></div>
+        <div class="rule-card"><span class="tag">History</span><h3>Updates keep the old balance.</h3><p>Every update is a new entry, never an edit. Your history stays intact, so you can see how old projections held up.</p></div>
+        <div class="rule-card"><span class="tag">Growth</span><h3>Savings earn nothing unless you say so.</h3><p>Cash accumulates as cash. Returns apply only to accounts you mark invested, and interest pays out as cash unless you say otherwise.</p></div>
+        <div class="rule-card"><span class="tag owed">Honesty</span><h3>A falling line is drawn falling.</h3><p>Spend more than you earn and the line goes down. Never clamped at zero, never smoothed, never softened.</p></div>
       </div>
     </div>
   </section>
@@ -389,19 +400,19 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
     <div class="wrap">
       <div class="sec-head">
         <h2>Nothing leaves your phone.</h2>
-        <p>There is no account and no sign-up. Your balances, account names and projections are stored only on your iPhone, in a database that is encrypted while your phone is locked.</p>
+        <p>No account, no sign-up. Balances, account names and projections live only on your iPhone, encrypted while it is locked.</p>
       </div>
       <div class="privacy">
         <ul>
-          <li><strong>No tracking</strong><span>No analytics, no advertising and no third-party SDKs. The app has no server of its own.</span></li>
-          <li><strong>One optional request</strong><span>Daily reference exchange rates, switched off until you turn it on. It sends a three-letter currency code and nothing else. No balance, amount, account name or category is ever transmitted.</span></li>
-          <li><strong>Yours to take</strong><span>Export everything you have entered at any time, including an encrypted backup sealed with a passphrase only you hold.</span></li>
-          <li><strong>Yours to delete</strong><span>Deleting the app deletes everything. Your database lives inside it, so removing the app removes your data from the device.</span></li>
+          <li><strong>No tracking</strong><span>No analytics, no advertising, no third-party SDKs. The app has no server of its own.</span></li>
+          <li><strong>One optional request</strong><span>Daily exchange rates, off until you turn it on. It sends a three-letter currency code — never a balance, amount, account name or category.</span></li>
+          <li><strong>Yours to take</strong><span>Export everything, any time, including an encrypted backup only your passphrase opens.</span></li>
+          <li><strong>Yours to delete</strong><span>Delete the app and it is all gone. The database lives inside it.</span></li>
         </ul>
         <div class="airplane">
           <p class="label">The quickest check</p>
           <h3>Try it in Airplane Mode.</h3>
-          <p>Switch the radio off and use the whole app. Entering accounts, the projection, the breakdown, targets, history, export. Every feature works, because none of them depends on a network.</p>
+          <p>Switch the radio off and use all of it: accounts, projection, breakdown, targets, history, export. Nothing needs a network.</p>
         </div>
       </div>
     </div>
@@ -411,7 +422,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
     <div class="wrap">
       <div class="sec-head">
         <h2>Every screen is one tap away.</h2>
-        <p>Projection, Target, Accounts, Planned, Assumptions, History and Settings sit on one hub. Nothing is buried, and nothing is locked.</p>
+        <p>Projection, Target, Accounts, Planned, Assumptions, History, Settings — all on one hub. Nothing buried, nothing locked.</p>
       </div>
       <div class="screens" id="screens">
         <figure class="phone"><div class="frame"><img src="assets/projection.png" alt="The Projection screen: net worth today, the horizon picker, and the line drawn month by month." loading="lazy" width="1206" height="2622"></div><figcaption><strong>Projection</strong>The number you open the app to see, and the line.</figcaption></figure>
@@ -425,7 +436,7 @@ footer { border-top: 1px solid var(--rule); padding-block: 32px 48px; }
     <div class="wrap closing">
       <div>
         <h2>Free, and nothing to sign up for.</h2>
-        <p>WaffleWealth is coming to the App Store for iPhone. Leave an address and you'll hear from us once, on the day it's out.</p>
+        <p>Coming to the App Store for iPhone. Leave an address and you’ll hear from us once, on the day it’s out.</p>
       </div>
       <form class="waitlist" id="waitlist-2" novalidate>
         <label for="email-2" class="label">Get one email when it's out</label>
