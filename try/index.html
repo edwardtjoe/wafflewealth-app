@@ -493,6 +493,8 @@ let W = 640, H = 320; const PAD = { l: 58, r: 14, t: 16, b: 30 };
 function sizeChart() { const w = Math.round(chart.getBoundingClientRect().width) || 640; W = Math.max(280, w); H = Math.round(Math.max(220, Math.min(320, W * 0.5))); chart.setAttribute("viewBox", "0 0 " + W + " " + H); chart.style.height = H + "px"; }
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let points = [], scale = null;
+/* `hidden` is an HTML property; on an SVG element it is only an attribute, so toggle that. */
+const showSvg = (node, on) => { if (on) node.removeAttribute("hidden"); else node.setAttribute("hidden", ""); };
 const svgEl = (name, attrs) => { const e = document.createElementNS("http://www.w3.org/2000/svg", name); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
 const horizonLabel = () => horizon >= 24 && horizon % 12 === 0 ? "In " + horizon / 12 + " years" : "In " + horizon + " months";
 
@@ -508,11 +510,11 @@ function draw(animate) {
   for (const t of ticks) { gridG.appendChild(svgEl("line", { x1: PAD.l, x2: W - PAD.r, y1: y(t), y2: y(t) })); const l = svgEl("text", { x: PAD.l - 8, y: y(t) + 4, "text-anchor": "end" }); l.textContent = compact(t); axisG.appendChild(l); }
   const step = Math.max(1, Math.ceil(horizon / 4));
   for (let i = 0; i <= horizon; i += step) { const anchor = i === 0 ? "start" : i >= horizon - step / 2 ? "end" : "middle"; const l = svgEl("text", { x: x(i), y: H - 8, "text-anchor": anchor }); l.textContent = monthAxis(points[i].date); axisG.appendChild(l); }
-  if (low < 0 && high > 0) { zeroLine.setAttribute("x1", PAD.l); zeroLine.setAttribute("x2", W - PAD.r); zeroLine.setAttribute("y1", y(0)); zeroLine.setAttribute("y2", y(0)); zeroLine.hidden = false; } else zeroLine.hidden = true;
+  if (low < 0 && high > 0) { zeroLine.setAttribute("x1", PAD.l); zeroLine.setAttribute("x2", W - PAD.r); zeroLine.setAttribute("y1", y(0)); zeroLine.setAttribute("y2", y(0)); showSvg(zeroLine, true); } else showSvg(zeroLine, false);
   const path = (key) => points.map((p, i) => (i ? "L" : "M") + x(i).toFixed(2) + " " + y(p[key]).toFixed(2)).join(" ");
   linePath.style.transition = "none"; linePath.style.strokeDasharray = ""; linePath.style.strokeDashoffset = "";
   linePath.setAttribute("d", path("netWorth"));
-  reachPath.hidden = !hasLocked; $("legend").hidden = !hasLocked;
+  showSvg(reachPath, hasLocked); $("legend").hidden = !hasLocked;
   if (hasLocked) reachPath.setAttribute("d", path("available"));
   if (animate && !reduced) { const len = linePath.getTotalLength(); linePath.style.strokeDasharray = len; linePath.style.strokeDashoffset = len; requestAnimationFrame(() => requestAnimationFrame(() => { linePath.style.transition = "stroke-dashoffset 1100ms cubic-bezier(.2,.7,.2,1)"; linePath.style.strokeDashoffset = 0; })); }
   hideCross();
@@ -538,12 +540,12 @@ function detail(i) {
   const locked = p.locked > 0; $("d-locked-k").hidden = !locked; $("d-locked").hidden = !locked; if (locked) $("d-locked").textContent = fmt(p.locked);
 }
 function showMonth(i) {
-  const p = points[i]; cross.hidden = false;
+  const p = points[i]; showSvg(cross, true);
   crossLine.setAttribute("x1", scale.x(i)); crossLine.setAttribute("x2", scale.x(i)); crossLine.setAttribute("y1", PAD.t); crossLine.setAttribute("y2", H - PAD.b);
   crossDot.setAttribute("cx", scale.x(i)); crossDot.setAttribute("cy", scale.y(p.netWorth));
   roWhen.textContent = i === 0 ? "Today, " + monthLong(p.date) : monthLong(p.date) + " · month " + i; roVal.textContent = fmt(p.netWorth); detail(i);
 }
-function hideCross() { cross.hidden = true; roWhen.textContent = horizonLabel(); roVal.textContent = fmt(points[horizon].netWorth); detail(horizon); }
+function hideCross() { showSvg(cross, false); roWhen.textContent = horizonLabel(); roVal.textContent = fmt(points[horizon].netWorth); detail(horizon); }
 function monthAt(evt) { const r = chart.getBoundingClientRect(); const px = ((evt.clientX - r.left) / r.width) * W; const i = Math.round(((px - PAD.l) / (W - PAD.l - PAD.r)) * horizon); return Math.max(0, Math.min(horizon, i)); }
 let tracking = false;
 chart.addEventListener("pointerdown", (e) => { tracking = true; chart.setPointerCapture(e.pointerId); showMonth(monthAt(e)); });

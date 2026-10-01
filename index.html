@@ -576,6 +576,8 @@ function sizeChart() {
 const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 let horizon = 24, points = [], scale = null;
 
+/* `hidden` is an HTML property; on an SVG element it is only an attribute, so toggle that. */
+const showSvg = (node, on) => { if (on) node.removeAttribute("hidden"); else node.setAttribute("hidden", ""); };
 const svgEl = (name, attrs) => { const e = document.createElementNS("http://www.w3.org/2000/svg", name); for (const k in attrs) e.setAttribute(k, attrs[k]); return e; };
 
 function draw(animate) {
@@ -598,8 +600,8 @@ function draw(animate) {
     const label = svgEl("text", { x: x(i), y: H - 8, "text-anchor": anchor });
     label.textContent = monthAxis(points[i].date); axisG.appendChild(label);
   }
-  if (low < 0 && high > 0) { zeroLine.setAttribute("x1", PAD.l); zeroLine.setAttribute("x2", W - PAD.r); zeroLine.setAttribute("y1", y(0)); zeroLine.setAttribute("y2", y(0)); zeroLine.hidden = false; }
-  else zeroLine.hidden = true;
+  if (low < 0 && high > 0) { zeroLine.setAttribute("x1", PAD.l); zeroLine.setAttribute("x2", W - PAD.r); zeroLine.setAttribute("y1", y(0)); zeroLine.setAttribute("y2", y(0)); showSvg(zeroLine, true); }
+  else showSvg(zeroLine, false);
 
   linePath.style.transition = "none"; linePath.style.strokeDasharray = ""; linePath.style.strokeDashoffset = "";
   linePath.setAttribute("d", points.map((p, i) => (i ? "L" : "M") + x(i).toFixed(2) + " " + y(p.value).toFixed(2)).join(" "));
@@ -620,7 +622,7 @@ function draw(animate) {
 function horizonLabel() { return horizon >= 120 ? "In " + horizon / 12 + " years" : "In " + horizon + " months"; }
 function showMonth(i) {
   const p = points[i];
-  cross.hidden = false;
+  showSvg(cross, true);
   crossLine.setAttribute("x1", scale.x(i)); crossLine.setAttribute("x2", scale.x(i));
   crossLine.setAttribute("y1", PAD.t); crossLine.setAttribute("y2", H - PAD.b);
   crossDot.setAttribute("cx", scale.x(i)); crossDot.setAttribute("cy", scale.y(p.value));
@@ -628,7 +630,7 @@ function showMonth(i) {
   roVal.textContent = fmt(p.value);
 }
 function hideCross() {
-  cross.hidden = true;
+  showSvg(cross, false);
   roWhen.textContent = horizonLabel();
   roVal.textContent = fmt(points[horizon].value);
 }
